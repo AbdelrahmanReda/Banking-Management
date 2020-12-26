@@ -45,7 +45,7 @@
                         <h1>Money Transfer </h1>
                     </div>
                     <div class="card-body">
-                        <form class="needs-validation" novalidate>
+                        <form class="needs-validation" method="POST" action="TransactionsController" >
                             <div class="form-row">
                                 <div class="col-md-4 mb-3">
                                     <label for="source_account_id">Source Account ID</label>
