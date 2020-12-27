@@ -22,10 +22,9 @@
                        <%  out.print(request.getSession().getAttribute("customer_name")); %>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
-                        <a class="dropdown-item" href="#">Action</a>
+                         <a class="dropdown-item" href="log_out">Log out</a>
                         
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="log_out">Log out</a>
+                        
                     </div>
                 </li>              
             </ul>

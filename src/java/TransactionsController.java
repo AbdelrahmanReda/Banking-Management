@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import jdk.nashorn.internal.ir.ObjectNode;
 import Helpers.Helper;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -69,12 +70,78 @@ public class TransactionsController extends HttpServlet {
                 stmt.setInt(3, to_account);
                 stmt.executeUpdate();
 
+                getTransactions(request, response);
             }
-            out.print(from_Account + "  " + from_Account + " " + transaction_ammount + " <> " + Helper.getCurrentTimeStamp());
-
         } catch (IOException ex) {
             Logger.getLogger(TransactionsController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void getTransactions(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+
+        PreparedStatement stmt = null;
+        databaseController dbconteroller = new databaseController();
+        Connection con = dbconteroller.openDatabaseConnection();
+        stmt = con.prepareStatement("SELECT * FROM banck_transaction");
+//                PreparedStatement stmt = con.prepareStatement("SELECT * FROM banck_transaction WHERE banck_transaction.from_account = ?");
+//                stmt.setInt(1, 5);
+        ResultSet rs = stmt.executeQuery();
+        ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+        while (rs.next()) {
+            int transactions_id = rs.getInt("transaction_id");
+            float transaction_ammount = rs.getFloat("transaction_amount");
+            int from_Account = rs.getInt("from_account");
+            int to_account = rs.getInt("to_account");
+            Timestamp created_at = rs.getTimestamp("created_at");
+            Transaction transaction = new Transaction(transactions_id, transaction_ammount, from_Account, to_account, created_at);
+            transactions.add(transaction);
+        }
+        HttpSession session = request.getSession();
+        session.setAttribute("transactionList", transactions);
+        response.sendRedirect("Transaction.jsp");
+        // request.getRequestDispatcher("Transaction.jsp").forward(request, response);
+
+    }
+
+    private void cancelTransaction(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        PrintWriter out = response.getWriter();
+        PreparedStatement stmt = null;
+        databaseController dbconteroller = new databaseController();
+        Connection con = dbconteroller.openDatabaseConnection();
+        int transaction_id = Integer.parseInt(request.getParameter("cancelled_transaction_id"));
+        int source_account_id = -1;
+        int destination_account_id = -1;
+        float transaction_ammount=-1;
+
+        stmt = con.prepareStatement("SELECT * FROM banck_transaction WHERE  banck_transaction.transaction_id=?");
+        stmt.setInt(1, transaction_id);
+
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            source_account_id = rs.getInt("from_account");
+            destination_account_id = rs.getInt("to_account");
+            transaction_ammount=rs.getFloat("transaction_amount");
+        }
+
+        stmt = con.prepareStatement("DELETE FROM  banck_transaction WHERE banck_transaction.transaction_id=? AND TIMESTAMPDIFF(HOUR,banck_transaction.created_at,now())>=24 ");
+        stmt.setInt(1, transaction_id);
+        if (stmt.executeUpdate() > 0) {
+            System.out.println("updating with source :"+source_account_id+"  and dist "+destination_account_id);
+            stmt = con.prepareStatement("UPDATE  banck_account  SET banck_account.balance = banck_account.balance+? WHERE bank_account_id = ?");
+            stmt.setFloat(1, transaction_ammount);
+            stmt.setInt(2, source_account_id);
+            stmt.executeUpdate();
+            
+            
+            stmt = con.prepareStatement("UPDATE  banck_account  SET banck_account.balance = banck_account.balance-? WHERE bank_account_id = ?");
+            stmt.setFloat(1, transaction_ammount);
+            stmt.setInt(2, destination_account_id);
+            stmt.executeUpdate();
+            
+        }
+
+        getTransactions(request, response);
     }
 
     public void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -84,27 +151,13 @@ public class TransactionsController extends HttpServlet {
             if (request.getParameter("source_account_id") != null) {
                 makeTransaction(request, response);
 
+            } else if (request.getParameter("cancelled_transaction_id") != null) {
+
+                cancelTransaction(request, response);
+
             } else {
-                databaseController dbconteroller = new databaseController();
-                Connection con = dbconteroller.openDatabaseConnection();
-                PreparedStatement stmt = con.prepareStatement("SELECT * FROM banck_transaction");
-//                PreparedStatement stmt = con.prepareStatement("SELECT * FROM banck_transaction WHERE banck_transaction.from_account = ?");
-//                stmt.setInt(1, 5);
-                ResultSet rs = stmt.executeQuery();
-                ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
-                while (rs.next()) {
-                    int transactions_id = rs.getInt("transaction_id");
-                    float transaction_ammount = rs.getFloat("transaction_amount");
-                    int from_Account = rs.getInt("from_account");
-                    int to_account = rs.getInt("to_account");
-                    Timestamp created_at = rs.getTimestamp("created_at");
-                    Transaction transaction = new Transaction(transactions_id, transaction_ammount, from_Account, to_account, created_at);
-                    transactions.add(transaction);
-                }
-
-                request.setAttribute("transactionLists", transactions);
-                request.getRequestDispatcher("Transaction.jsp").forward(request, response);
+                getTransactions(request, response);
 
             }
 

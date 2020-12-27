@@ -10,19 +10,12 @@
             <div class="sidebar-header">
                 <h3>welcome </h3>
             </div>
-
             <ul class="list-unstyled components">
                <li>
                     <a href="customerhome.jsp">Home</a>
                 </li>
-                
                  <li>
                     <a href="TransactionsController">Transactions</a>
-                </li>
-                
-               
-             
+                </li>           
             </ul>
-
-      
         </nav>

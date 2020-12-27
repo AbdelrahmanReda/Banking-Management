@@ -75,7 +75,7 @@
                                <h1>Transactions Logs</h1>
                     </div>
                     <div class="card-body">
-                            
+                        
                         <table id="example" class="table" style="width:100%">
                             <thead>
                                 <tr>
@@ -84,25 +84,27 @@
                                     <th>From Account ID</th>
                                     <th>To Account ID</th>
                                     <th>Transaction Date</th>
+                                    <th>Operations</th>
 
                                 </tr>
                             </thead>
                             <tbody>
 
                                 <%
-                                    ArrayList<Transaction> transactions = (ArrayList<Transaction>) request.getAttribute("transactionLists");
+                                    ArrayList<Transaction> transactions = (ArrayList<Transaction>)session.getAttribute("transactionList");
+            
                                     for (Transaction transaction : transactions) {
                                         out.print("<tr><td>" + transaction.transactions_id + "</td>");
                                         out.print("<td>" + transaction.transaction_ammount + " L.E </td>");
                                         out.print("<td>" + transaction.from_Account + "</td>");
                                         out.print("<td>" + transaction.to_account + "</td>");
                                         out.print("<td>" + transaction.created_at + "</td>");
+                                        out.print("<td> <form method=\"POST\" action=\"TransactionsController\" > <input type=\"hidden\" name=\"cancelled_transaction_id\" value=\""+ transaction.transactions_id  +"\"> <button class=\"btn btn-primary\" type=\"submit\">Cancel Transaction</button> </form> " + ""+ "</td>");
                                         out.print("<tr/>");
                                     }
                                 %>
                             </tbody>
                         </table>
-
                     </div>
                 </div>
 

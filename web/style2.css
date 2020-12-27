@@ -93,15 +93,12 @@ a:focus {
 }
 
 #sidebar ul li a:hover {
-    color: #7386D5;
-    background: #fff;
+    color: #dcdcdc;
+    background: #0042ff;
 }
 
 #sidebar ul li.active>a,
-a[aria-expanded="true"] {
-    color: #fff;
-    background: #6d7fcc;
-}
+
 
 a[data-toggle="collapse"] {
     position: relative;
@@ -237,9 +234,16 @@ body {
   transform: translateY(3px);
 }
 
-.navbar-expand-md .navbar-nav .dropdown-menu {
-    position: absolute;
-    /* right: -30px; */
-    top: 35px;
-    left: -39px;
+
+
+.login-form{
+        max-width: 496px;
+    margin: 0 auto;
+    background-color: white;
+       padding: 20px;
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+}
+.login-form .form-control{
+    background-color: white !important;
 }
