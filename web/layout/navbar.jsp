@@ -23,8 +23,6 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
                          <a class="dropdown-item" href="log_out">Log out</a>
-                        
-                        
                     </div>
                 </li>              
             </ul>

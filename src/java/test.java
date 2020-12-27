@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
  
-@WebServlet("/processForm")
+@WebServlet(urlPatterns = {"/test"})
 public class test extends HttpServlet {
 
     /**

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import com.mysql.jdbc.Connection;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,10 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author boody
- */
 @WebServlet(urlPatterns = {"/add_account"})
 public class add_account extends HttpServlet {
 
@@ -34,13 +24,6 @@ public class add_account extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private static java.sql.Timestamp getCurrentTimeStamp() {
-
-        java.util.Date today = new java.util.Date();
-        return new java.sql.Timestamp(today.getTime());
-
-    }
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -57,12 +40,12 @@ public class add_account extends HttpServlet {
                 stmt.setInt(1, 5);
                 stmt.setInt(2, Integer.parseInt(request.getSession().getAttribute("customer_id").toString()));//1 specifies the first parameter in the query  
                 stmt.setInt(3, 1000);//1 specifies the first parameter in the query  
-                stmt.setTimestamp(4, getCurrentTimeStamp());
+                stmt.setTimestamp(4, Helpers.Helper.getCurrentTimeStamp());
 //1 specifies the first parameter in the query  
                 out.print(stmt);
                 try {
                     stmt.executeUpdate();
-                    out.print("inserted");
+                    
                     
                     response.sendRedirect("customerhome.jsp");
 
@@ -71,11 +54,9 @@ public class add_account extends HttpServlet {
                 }
 
             } catch (Exception e) {
-                out.print("Heloooooo");
+                out.print("Exception Happedned");
                 e.printStackTrace();
-
             }
-
         }
     }
 

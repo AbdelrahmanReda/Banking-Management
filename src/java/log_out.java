@@ -45,8 +45,9 @@ public class log_out extends HttpServlet {
             out.println("</html>");
              HttpSession session=request.getSession();  
             session.invalidate();  
+               
             
-             response.sendRedirect("login.html");
+             response.sendRedirect("login.jsp");
             
         }
           

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import com.mysql.jdbc.Connection;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,12 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author boody
- */
-@WebServlet(urlPatterns = {"/validate"})
-public class validate extends HttpServlet {
+@WebServlet(urlPatterns = {"/ValidateController"})
+public class ValidateController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,37 +28,37 @@ public class validate extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet validate</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet validate at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
             try {
                 Integer customer_id = Integer.parseInt(request.getParameter("customer_id"));
+                String customer_password = (request.getParameter("customer_password"));
                 Class.forName("com.mysql.jdbc.Driver");
                 HttpSession session = request.getSession(true);
+                session.setMaxInactiveInterval(-1);
                 String url = "jdbc:mysql://localhost:3306/bank_management_system?zeroDateTimeBehavior=convertToNull";
                 Connection con = (Connection) DriverManager.getConnection(url, "root", "");
-                PreparedStatement stmt = con.prepareStatement("SELECT * FROM customer WHERE customer.customer_id = ?");
+                PreparedStatement stmt = con.prepareStatement("SELECT * FROM customer WHERE customer.customer_id = ? AND customer.password = ? ");
                 stmt.setInt(1, customer_id);//1 specifies the first parameter in the query  
+                stmt.setString(2, customer_password);//1 specifies the first parameter in the query  
 
                 try {
-
+                    int rowsCounter = 0 ; 
                     ResultSet rs = stmt.executeQuery();
-                    while (rs.next()) {
+                    while (rs.next()){
+                        rowsCounter=rowsCounter+1;
                         session.setAttribute("customer_id", rs.getInt("customer_id"));
                         session.setAttribute("customer_name", rs.getString("customer_name"));
                         session.setAttribute("customer_address", rs.getString("customer_address"));
                         session.setAttribute("customer_phone", rs.getString("customer_phone"));
                     }
-                  
+                    if (rowsCounter==0)
+                    {
+                        System.out.println("wronggii");
+                        //wrong credititails 
+                        session.setAttribute("wrong_logging","true");
+                        response.sendRedirect("login.jsp");
                     
-                    //out.print(request.getSession().getAttribute("customer_name"));
+                    
+                    }
                     response.sendRedirect("customerhome.jsp");
                     
                 } catch (SQLException e) {
