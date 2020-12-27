@@ -33,6 +33,7 @@
     </head>
 
     <body>
+        <%  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); %>
 
         <div class="wrapper">
             <!-- Sidebar  -->
@@ -44,9 +45,17 @@
                 
                 <%@ include file = "layout\warning_msg.jsp" %>
                 
+                <% 
+                    
+                   
+                  if (session.getAttribute("customer_id")==null) {
+                        response.sendRedirect("login.jsp");
+                    }
                 
+                %>
                                 
-
+                
+                   
 
                 
                

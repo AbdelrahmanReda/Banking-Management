@@ -12,7 +12,7 @@
             </div>
             <ul class="list-unstyled components">
                <li>
-                    <a href="customerhome.jsp">Home</a>
+                    <a href="DashboardController">Home</a>
                 </li>
                  <li>
                     <a href="TransactionsController">Transactions</a>

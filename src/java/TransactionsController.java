@@ -78,7 +78,7 @@ public class TransactionsController extends HttpServlet {
     }
 
     private void getTransactions(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-
+        
         PreparedStatement stmt = null;
         databaseController dbconteroller = new databaseController();
         Connection con = dbconteroller.openDatabaseConnection();
@@ -148,6 +148,14 @@ public class TransactionsController extends HttpServlet {
             throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            HttpSession session = request.getSession();
+            System.out.println("look at this >>"+session.getAttribute("customer_id"));
+            
+            if (session.getAttribute("customer_id")==null) {
+                session.invalidate();
+                response.sendRedirect("login.jsp");
+                return;
+            }
             if (request.getParameter("source_account_id") != null) {
                 makeTransaction(request, response);
 
@@ -156,7 +164,7 @@ public class TransactionsController extends HttpServlet {
                 cancelTransaction(request, response);
 
             } else {
-
+                
                 getTransactions(request, response);
 
             }

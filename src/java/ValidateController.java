@@ -52,12 +52,10 @@ public class ValidateController extends HttpServlet {
                     }
                     if (rowsCounter==0)
                     {
-                        System.out.println("wronggii");
                         //wrong credititails 
                         session.setAttribute("wrong_logging","true");
                         response.sendRedirect("login.jsp");
-                    
-                    
+                                        
                     }
                     response.sendRedirect("customerhome.jsp");
                     

@@ -27,6 +27,13 @@
                                out.print( "<div class=\"alert alert-danger\"><strong > Error!</strong > Wrong Loging Data, please try again.</div> ");         
                               }
                             session.removeAttribute("wrong_logging");
+                            
+                           
+                            if (session.getAttribute("customer_id")!=null) {
+                                    response.sendRedirect("customerhome.jsp");
+                                }
+                            
+                            
                         %>
 
                         <div class="mb-3">

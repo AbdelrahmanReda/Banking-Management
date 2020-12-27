@@ -33,6 +33,15 @@
 
     </head>
     <body>
+        
+        <%  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); %>
+        
+        <%
+            
+        if (session.getAttribute("customer_id") == null) {
+                                        response.sendRedirect("login.jsp");
+                                    }
+        %>
 
         <div class="wrapper">
             <!-- Sidebar  -->
@@ -50,17 +59,17 @@
                                 <div class="col-md-4 mb-3">
                                     <label for="source_account_id">Source Account ID</label>
                                     <input type="number" min="1" class="form-control" id="source_account_id" name="source_account_id" placeholder="ex:98448188" value="Mark" required>
-                                    
+
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label  for="destination_account_id">Destination Account ID</label>
                                     <input type="number" min="1"  class="form-control" id="destination_account_id" name="destination_account_id" placeholder="ex: 1658484"  required>
-                                   
+
                                 </div>
                                 <div class="col-md-4 mb-3">
-                                      <label for="transaction_ammount">Transaction Ammount</label>
-                                      <input type="number" min="50" class="form-control" id="transaction_ammount" name="transaction_ammount"  placeholder="ex:200" value="Otto" required>
-                                   
+                                    <label for="transaction_ammount">Transaction Ammount</label>
+                                    <input type="number" min="50" class="form-control" id="transaction_ammount" name="transaction_ammount"  placeholder="ex:200" value="Otto" required>
+
                                 </div>
                             </div>
 
@@ -71,11 +80,11 @@
 
                 <div class="card mt-5">
                     <div class="card-header">
-                            
-                               <h1>Transactions Logs</h1>
+
+                        <h1>Transactions Logs</h1>
                     </div>
                     <div class="card-body">
-                        
+
                         <table id="example" class="table" style="width:100%">
                             <thead>
                                 <tr>
@@ -91,16 +100,20 @@
                             <tbody>
 
                                 <%
-                                    ArrayList<Transaction> transactions = (ArrayList<Transaction>)session.getAttribute("transactionList");
-            
+                                    
+                                    if( session.getAttribute("transactionList")!=null)
+                                    {
+                                    
+                                    ArrayList<Transaction> transactions = (ArrayList<Transaction>) session.getAttribute("transactionList");
                                     for (Transaction transaction : transactions) {
                                         out.print("<tr><td>" + transaction.transactions_id + "</td>");
                                         out.print("<td>" + transaction.transaction_ammount + " L.E </td>");
                                         out.print("<td>" + transaction.from_Account + "</td>");
                                         out.print("<td>" + transaction.to_account + "</td>");
                                         out.print("<td>" + transaction.created_at + "</td>");
-                                        out.print("<td> <form method=\"POST\" action=\"TransactionsController\" > <input type=\"hidden\" name=\"cancelled_transaction_id\" value=\""+ transaction.transactions_id  +"\"> <button class=\"btn btn-primary\" type=\"submit\">Cancel Transaction</button> </form> " + ""+ "</td>");
+                                        out.print("<td> <form method=\"POST\" action=\"TransactionsController\" > <input type=\"hidden\" name=\"cancelled_transaction_id\" value=\"" + transaction.transactions_id + "\"> <button class=\"btn btn-primary\" type=\"submit\">Cancel Transaction</button> </form> " + "" + "</td>");
                                         out.print("<tr/>");
+                                    }
                                     }
                                 %>
                             </tbody>
@@ -121,7 +134,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
         <script type="text/javascript">
-            
+
             $(document).ready(function () {
                 $("#sidebar").mCustomScrollbar({
                     theme: "minimal"
@@ -132,7 +145,7 @@
                     $('.collapse.in').toggleClass('in');
                     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
                 });
-                
+
             });
         </script>
 

@@ -61,10 +61,26 @@ public final class login_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                    <form  class=\"login-form\" method=\"POST\" action=\"ValidateController\" >\n");
       out.write("                        <h1 class=\"text-center\" >Welcome To </h1>\n");
       out.write("                        <h4 class=\"text-center\">Online Banking System</h4>\n");
+      out.write("                        ");
+
+                            if (session.getAttribute("wrong_logging") != null) {
+                               out.print( "<div class=\"alert alert-danger\"><strong > Error!</strong > Wrong Loging Data, please try again.</div> ");         
+                              }
+                            session.removeAttribute("wrong_logging");
+                            
+                           
+                            if (session.getAttribute("customer_id")!=null) {
+                                    response.sendRedirect("customerhome.jsp");
+                                }
+                            
+                            
+                        
+      out.write("\n");
+      out.write("\n");
       out.write("                        <div class=\"mb-3\">\n");
       out.write("                            <label for=\"customer_id\" class=\"form-label\">Customer Id</label>\n");
       out.write("                            <input type=\"number\" class=\"form-control\" id=\"customer_id\" name=\"customer_id\">\n");
-      out.write("                             <div id=\"emailHelp\" class=\"form-text\">We'll never share your email with anyone else.</div>\n");
+      out.write("                            <div id=\"emailHelp\" class=\"form-text\">We'll never share your email with anyone else.</div>\n");
       out.write("                        </div>\n");
       out.write("                        <div class=\"mb-3\">\n");
       out.write("                            <label for=\"customer_password\" class=\"form-label\">Password</label>\n");
