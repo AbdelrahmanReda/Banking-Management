@@ -23,17 +23,13 @@
                         <h1 class="text-center" >Welcome To </h1>
                         <h4 class="text-center">Online Banking System</h4>
                         <%
-                            if (session.getAttribute("wrong_logging") != null) {
+                            if (session.getAttribute("wrong_logging") != null){
                                out.print( "<div class=\"alert alert-danger\"><strong > Error!</strong > Wrong Loging Data, please try again.</div> ");         
                               }
                             session.removeAttribute("wrong_logging");
-                            
-                           
-                            if (session.getAttribute("customer_id")!=null) {
+                            if (session.getAttribute("customer_id")!=null){
                                     response.sendRedirect("customerhome.jsp");
                                 }
-                            
-                            
                         %>
 
                         <div class="mb-3">

@@ -63,17 +63,13 @@ public final class login_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                        <h4 class=\"text-center\">Online Banking System</h4>\n");
       out.write("                        ");
 
-                            if (session.getAttribute("wrong_logging") != null) {
+                            if (session.getAttribute("wrong_logging") != null){
                                out.print( "<div class=\"alert alert-danger\"><strong > Error!</strong > Wrong Loging Data, please try again.</div> ");         
                               }
                             session.removeAttribute("wrong_logging");
-                            
-                           
-                            if (session.getAttribute("customer_id")!=null) {
+                            if (session.getAttribute("customer_id")!=null){
                                     response.sendRedirect("customerhome.jsp");
                                 }
-                            
-                            
                         
       out.write("\n");
       out.write("\n");

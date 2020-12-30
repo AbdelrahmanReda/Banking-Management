@@ -15,6 +15,9 @@
 
 
     <%@include file="layout/header.jsp" %> 
+    
+
+ 
 
     <body>
         <%  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); %>
@@ -52,30 +55,30 @@
                                         </tr>
                                         <tr>
                                             <th>Personal Phone</th>                    
-                                            <td>   <%  out.print(request.getSession().getAttribute("customer_phone")); %></td>                                          
+                                            <td>   <%  out.print(request.getAttribute("customer_phone")); %></td>                                          
                                         </tr>
                                         <tr>
                                             <th>Address Details</th>
 
-                                            <td>   <%  out.print(request.getSession().getAttribute("customer_address")); %></td>
+                                            <td>   <%  out.print(request.getAttribute("customer_address")); %></td>
 
                                         </tr>
                                         <tr>
                                             <th>Bank Account ID</th>
 
-                                            <td>   <%  out.print(request.getSession().getAttribute("bank_account_id")); %></td>
+                                            <td>   <%  out.print(request.getAttribute("bank_account_id")); %></td>
 
                                         </tr>
                                         <tr>
                                             <th>Account Balance</th>
 
-                                            <td>   <%  out.print(request.getSession().getAttribute("customer_balance")); %></td>
+                                            <td>   <%  out.print(request.getAttribute("customer_balance")); %></td>
 
                                         </tr>
                                         <tr>
                                             <th>Bank Account Creation Date</th>
 
-                                            <td>   <%  out.print(request.getSession().getAttribute("created_at"));%></td>
+                                            <td>   <%  out.print(request.getAttribute("created_at"));%></td>
 
                                         </tr>
                                     </tbody>
