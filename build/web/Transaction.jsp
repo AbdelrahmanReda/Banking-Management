@@ -9,38 +9,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-        <title>Collapsible sidebar using Bootstrap 4</title>
-        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-        <!-- Bootstrap CSS CDN -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-
-        <link rel="stylesheet" href="//cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" >
-        <script  src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js" ></script>
-
-        <!-- Our Custom CSS -->
-        <link rel="stylesheet" href="style2.css">
-        <!-- Scrollbar Custom CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-
-        <!-- Font Awesome JS -->
-        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-
-    </head>
+    <%@include file="layout/header.jsp" %> 
     <body>
-        
+
         <%  response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); %>
-        
+
         <%
-            
-        if (session.getAttribute("customer_id") == null) {
-                                        response.sendRedirect("login.jsp");
-                                    }
+            if (session.getAttribute("customer_id") == null) {
+                response.sendRedirect("login.jsp");
+            }
         %>
 
         <div class="wrapper">
@@ -51,7 +28,19 @@
                 <%@ include file = "layout\navbar.jsp" %>
                 <div class="card">
                     <div class="card-header">
-                        <h1>Money Transfer </h1>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-1 d-flex align-items-center">
+                                    <span data-balloon="Copy Unicode Glyph" data-balloon-pos="down" class="dib hover-orange4"><svg style="width: 45px; height: auto" aria-hidden="true" focusable="false" data-prefix="far" data-icon="barcode-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="svg-inline--fa fa-barcode-alt fa-w-20" style=""><path fill="currentColor" d="M360 384h48c4.4 0 8-3.6 8-8V136c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v240c0 4.4 3.6 8 8 8zm96 0h48c4.4 0 8-3.6 8-8V136c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v240c0 4.4 3.6 8 8 8zm-160 0h16c4.4 0 8-3.6 8-8V136c0-4.4-3.6-8-8-8h-16c-4.4 0-8 3.6-8 8v240c0 4.4 3.6 8 8 8zM592 0H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h544c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm0 464H48V48h544v416zm-456-80h48c4.4 0 8-3.6 8-8V136c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v240c0 4.4 3.6 8 8 8zm96 0h16c4.4 0 8-3.6 8-8V136c0-4.4-3.6-8-8-8h-16c-4.4 0-8 3.6-8 8v240c0 4.4 3.6 8 8 8z" class=""></path></svg></span>
+                                </div>
+                                <div class="col" >
+                                    <h1>Money Transfer </h1>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                     </div>
                     <div class="card-body">
                         <form class="needs-validation" method="POST" action="TransactionsController" >
@@ -59,20 +48,16 @@
                                 <div class="col-md-4 mb-3">
                                     <label for="source_account_id">Source Account ID</label>
                                     <input type="number" min="1" class="form-control" id="source_account_id" name="source_account_id" placeholder="ex:98448188" value="Mark" required>
-
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label  for="destination_account_id">Destination Account ID</label>
                                     <input type="number" min="1"  class="form-control" id="destination_account_id" name="destination_account_id" placeholder="ex: 1658484"  required>
-
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label for="transaction_ammount">Transaction Ammount</label>
                                     <input type="number" min="50" class="form-control" id="transaction_ammount" name="transaction_ammount"  placeholder="ex:200" value="Otto" required>
-
                                 </div>
                             </div>
-
                             <button class="btn btn-primary" type="submit">Peform Transaction</button>
                         </form>
                     </div>           
@@ -80,8 +65,17 @@
 
                 <div class="card mt-5">
                     <div class="card-header">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-lg-1 d-flex align-items-center">
+<span data-balloon="Copy Unicode Glyph" data-balloon-pos="down" class="dib hover-orange4"><svg  style="width: 27px; height: auto"  aria-hidden="true" focusable="false" data-prefix="far" data-icon="euro-sign" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="svg-inline--fa fa-euro-sign fa-w-10"><path fill="currentColor" d="M315.6 458.6l-6.5-29.4c-1.4-6.5-8-10.6-14.5-9.1-10.3 2.4-26.5 5.4-44.7 5.4-65.5 0-117-39.5-138.2-97.4h129.5c5.7 0 10.6-4 11.7-9.6l5-24c1.5-7.5-4.1-14.4-11.7-14.4h-148c-1.5-16.1-2.1-32.3-.6-48h162.5c5.7 0 10.6-4 11.7-9.5l5.1-24c1.6-7.5-4.1-14.5-11.7-14.5H108.1c21-58.4 72.5-98 140-98 14.7 0 28.9 2.1 38.2 3.8 6.2 1.1 12.2-2.6 13.8-8.7l7.9-29.6c1.8-6.8-2.5-13.6-9.4-14.9-11.4-2.1-29.4-4.7-49.3-4.7-100 0-179.7 64.1-205.9 152H12c-6.6 0-12 5.4-12 12v24c0 6.6 5.4 12 12 12h23.1c-1.2 15.8-1 35.5.4 48H12c-6.6 0-12 5.4-12 12v24c0 6.6 5.4 12 12 12h32.2c26 88.7 103.4 152 205 152 24.4 0 45.4-4.2 57.5-7.2 6.4-1.6 10.3-7.9 8.9-14.2z" class=""></path></svg></span>                                </div>
+                                <div class="col" >
+                                    <h1>Transactions Logs</h1>
+                                </div>
+                            </div>
+                        </div>
 
-                        <h1>Transactions Logs</h1>
+                        
                     </div>
                     <div class="card-body">
 
@@ -100,20 +94,18 @@
                             <tbody>
 
                                 <%
-                                    
-                                    if( session.getAttribute("transactionList")!=null)
-                                    {
-                                    
-                                    ArrayList<Transaction> transactions = (ArrayList<Transaction>) session.getAttribute("transactionList");
-                                    for (Transaction transaction : transactions) {
-                                        out.print("<tr><td>" + transaction.transactions_id + "</td>");
-                                        out.print("<td>" + transaction.transaction_ammount + " L.E </td>");
-                                        out.print("<td>" + transaction.from_Account + "</td>");
-                                        out.print("<td>" + transaction.to_account + "</td>");
-                                        out.print("<td>" + transaction.created_at + "</td>");
-                                        out.print("<td> <form method=\"POST\" action=\"TransactionsController\" > <input type=\"hidden\" name=\"cancelled_transaction_id\" value=\"" + transaction.transactions_id + "\"> <button class=\"btn btn-primary\" type=\"submit\">Cancel Transaction</button> </form> " + "" + "</td>");
-                                        out.print("<tr/>");
-                                    }
+                                    if (session.getAttribute("transactionList") != null) {
+
+                                        ArrayList<Transaction> transactions = (ArrayList<Transaction>) session.getAttribute("transactionList");
+                                        for (Transaction transaction : transactions) {
+                                            out.print("<tr><td>" + transaction.transactions_id + "</td>");
+                                            out.print("<td>" + transaction.transaction_ammount + " L.E </td>");
+                                            out.print("<td>" + transaction.from_Account + "</td>");
+                                            out.print("<td>" + transaction.to_account + "</td>");
+                                            out.print("<td>" + transaction.created_at + "</td>");
+                                            out.print("<td> <form method=\"POST\" action=\"TransactionsController\" > <input type=\"hidden\" name=\"cancelled_transaction_id\" value=\"" + transaction.transactions_id + "\"> <button class=\"btn btn-primary\" type=\"submit\">Cancel Transaction</button> </form> " + "" + "</td>");
+                                            out.print("<tr/>");
+                                        }
                                     }
                                 %>
                             </tbody>

@@ -1,3 +1,4 @@
+
 import com.mysql.jdbc.Connection;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,36 +30,39 @@ public class ValidateController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             try {
+                databaseController dbconteroller = new databaseController();
+                java.sql.Connection con = dbconteroller.openDatabaseConnection();
                 Integer customer_id = Integer.parseInt(request.getParameter("customer_id"));
                 String customer_password = (request.getParameter("customer_password"));
-                Class.forName("com.mysql.jdbc.Driver");
+
                 HttpSession session = request.getSession(true);
                 session.setMaxInactiveInterval(-1);
-                String url = "jdbc:mysql://localhost:3306/bank_management_system?zeroDateTimeBehavior=convertToNull";
-                Connection con = (Connection) DriverManager.getConnection(url, "root", "");
-                PreparedStatement stmt = con.prepareStatement("SELECT * FROM customer WHERE customer.customer_id = ? AND customer.password = ? ");
+                PreparedStatement stmt = con.prepareStatement("SELECT * FROM customer INNER JOIN banck_account on customer.customer_id = banck_account.customer_id WHERE customer.customer_id = ? AND customer.password = ?");
                 stmt.setInt(1, customer_id);//1 specifies the first parameter in the query  
                 stmt.setString(2, customer_password);//1 specifies the first parameter in the query  
 
                 try {
-                    int rowsCounter = 0 ; 
+                    int rowsCounter = 0;
                     ResultSet rs = stmt.executeQuery();
-                    while (rs.next()){
-                        rowsCounter=rowsCounter+1;
+                    while (rs.next()) {
+                        rowsCounter = rowsCounter + 1;
                         session.setAttribute("customer_id", rs.getInt("customer_id"));
                         session.setAttribute("customer_name", rs.getString("customer_name"));
                         session.setAttribute("customer_address", rs.getString("customer_address"));
                         session.setAttribute("customer_phone", rs.getString("customer_phone"));
+                        session.setAttribute("bank_account_id", rs.getInt("bank_account_id"));
+
+                        session.setAttribute("customer_balance", rs.getFloat("balance"));
+                        session.setAttribute("created_at", rs.getTimestamp("created_at"));
                     }
-                    if (rowsCounter==0)
-                    {
+                    if (rowsCounter == 0) {
                         //wrong credititails 
-                        session.setAttribute("wrong_logging","true");
+                        session.setAttribute("wrong_logging", "true");
                         response.sendRedirect("login.jsp");
-                                        
+
                     }
                     response.sendRedirect("customerhome.jsp");
-                    
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
