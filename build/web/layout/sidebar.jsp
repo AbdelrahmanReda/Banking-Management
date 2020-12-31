@@ -12,10 +12,10 @@
             </div>
             <ul class="list-unstyled components">
                <li>
-                    <a href="DashboardController">Home</a>
+                    <a class="Dashboard" href="DashboardController">Home</a>
                 </li>
                  <li>
-                    <a href="TransactionsController">Transactions</a>
+                     <a class="Transactins" href="TransactionsController">Transactions</a>
                 </li>           
             </ul>
         </nav>

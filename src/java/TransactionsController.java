@@ -78,13 +78,16 @@ public class TransactionsController extends HttpServlet {
     }
 
     private void getTransactions(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        
+
         PreparedStatement stmt = null;
         databaseController dbconteroller = new databaseController();
         Connection con = dbconteroller.openDatabaseConnection();
-        stmt = con.prepareStatement("SELECT * FROM banck_transaction");
-//                PreparedStatement stmt = con.prepareStatement("SELECT * FROM banck_transaction WHERE banck_transaction.from_account = ?");
-//                stmt.setInt(1, 5);
+        //stmt = con.prepareStatement("SELECT * FROM banck_transaction");
+        stmt = con.prepareStatement("SELECT * FROM banck_transaction WHERE banck_transaction.from_account = ? OR banck_transaction.to_account = ? ");
+        HttpSession session = request.getSession();
+        int customer_id= Integer.parseInt(session.getAttribute("customer_id").toString());
+        stmt.setInt(1, customer_id);
+        stmt.setInt(2, customer_id);
         ResultSet rs = stmt.executeQuery();
         ArrayList<Transaction> transactions = new ArrayList<Transaction>();
         while (rs.next()) {
@@ -96,7 +99,7 @@ public class TransactionsController extends HttpServlet {
             Transaction transaction = new Transaction(transactions_id, transaction_ammount, from_Account, to_account, created_at);
             transactions.add(transaction);
         }
-        HttpSession session = request.getSession();
+        
         session.setAttribute("transactionList", transactions);
         response.sendRedirect("Transaction.jsp");
         // request.getRequestDispatcher("Transaction.jsp").forward(request, response);
@@ -111,7 +114,7 @@ public class TransactionsController extends HttpServlet {
         int transaction_id = Integer.parseInt(request.getParameter("cancelled_transaction_id"));
         int source_account_id = -1;
         int destination_account_id = -1;
-        float transaction_ammount=-1;
+        float transaction_ammount = -1;
 
         stmt = con.prepareStatement("SELECT * FROM banck_transaction WHERE  banck_transaction.transaction_id=?");
         stmt.setInt(1, transaction_id);
@@ -121,24 +124,23 @@ public class TransactionsController extends HttpServlet {
         while (rs.next()) {
             source_account_id = rs.getInt("from_account");
             destination_account_id = rs.getInt("to_account");
-            transaction_ammount=rs.getFloat("transaction_amount");
+            transaction_ammount = rs.getFloat("transaction_amount");
         }
 
         stmt = con.prepareStatement("DELETE FROM  banck_transaction WHERE banck_transaction.transaction_id=? AND TIMESTAMPDIFF(HOUR,banck_transaction.created_at,now())>=24 ");
         stmt.setInt(1, transaction_id);
         if (stmt.executeUpdate() > 0) {
-            System.out.println("updating with source :"+source_account_id+"  and dist "+destination_account_id);
+            System.out.println("updating with source :" + source_account_id + "  and dist " + destination_account_id);
             stmt = con.prepareStatement("UPDATE  banck_account  SET banck_account.balance = banck_account.balance+? WHERE bank_account_id = ?");
             stmt.setFloat(1, transaction_ammount);
             stmt.setInt(2, source_account_id);
             stmt.executeUpdate();
-            
-            
+
             stmt = con.prepareStatement("UPDATE  banck_account  SET banck_account.balance = banck_account.balance-? WHERE bank_account_id = ?");
             stmt.setFloat(1, transaction_ammount);
             stmt.setInt(2, destination_account_id);
             stmt.executeUpdate();
-            
+
         }
 
         getTransactions(request, response);
@@ -149,9 +151,9 @@ public class TransactionsController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
-            System.out.println("look at this >>"+session.getAttribute("customer_id"));
-            
-            if (session.getAttribute("customer_id")==null) {
+            System.out.println("look at this >>" + session.getAttribute("customer_id"));
+
+            if (session.getAttribute("customer_id") == null) {
                 session.invalidate();
                 response.sendRedirect("login.jsp");
                 return;
@@ -164,7 +166,7 @@ public class TransactionsController extends HttpServlet {
                 cancelTransaction(request, response);
 
             } else {
-                
+
                 getTransactions(request, response);
 
             }

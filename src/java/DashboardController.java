@@ -40,7 +40,6 @@ public class DashboardController extends HttpServlet {
         stmt.setInt(1, customer_id);
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
-
             String customer_address = rs.getString("customer_address");
             String customer_phone = rs.getString("customer_phone");
             int bank_account_id = rs.getInt("bank_account_id");
@@ -72,30 +71,37 @@ public class DashboardController extends HttpServlet {
                 int customer_id = Integer.parseInt(request.getSession().getAttribute("customer_id").toString());
                 databaseController dbconteroller = new databaseController();
                 java.sql.Connection con = dbconteroller.openDatabaseConnection();
-                PreparedStatement stmt = con.prepareStatement("SELECT * FROM customer INNER JOIN banck_account on customer.customer_id = banck_account.customer_id WHERE customer.customer_id = ?");
+                PreparedStatement stmt = con.prepareStatement("SELECT * FROM customer WHERE customer.customer_id = ?");
                 stmt.setInt(1, customer_id);//1 specifies the first parameter in the query  
-
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
-
                     String customer_address = rs.getString("customer_address");
                     String customer_phone = rs.getString("customer_phone");
+                    //int bank_account_id = rs.getInt("bank_account_id");
+                    //float customer_balance = rs.getFloat("balance");
+                    //Timestamp created_at = rs.getTimestamp("created_at");
+                    request.setAttribute("customer_address", customer_address);
+                    request.setAttribute("customer_phone", customer_phone);
+                    request.setAttribute("bank_account_id", "N/A");
+                    request.setAttribute("customer_balance", "N/A");
+                    request.setAttribute("created_at", "N/A");
+                }
+                stmt = con.prepareStatement("SELECT * FROM banck_account WHERE customer_id = ? ");
+                stmt.setInt(1, customer_id);
+                rs = stmt.executeQuery();
+                request.setAttribute("has_account", "false");
+
+                while (rs.next()) {
+                    request.setAttribute("has_account", "true");
                     int bank_account_id = rs.getInt("bank_account_id");
                     float customer_balance = rs.getFloat("balance");
                     Timestamp created_at = rs.getTimestamp("created_at");
-
-                    request.setAttribute("customer_address", customer_address);
-                    request.setAttribute("customer_phone", customer_phone);
                     request.setAttribute("bank_account_id", bank_account_id);
                     request.setAttribute("customer_balance", customer_balance);
                     request.setAttribute("created_at", created_at);
-
                 }
-
                 request.getRequestDispatcher("customerhome.jsp").forward(request, response);
-
             }
-
         }
     }
 

@@ -33,12 +33,11 @@ public class ValidateController extends HttpServlet {
                 
                 Integer customer_id = Integer.parseInt(request.getParameter("customer_id"));
                 String customer_password = (request.getParameter("customer_password"));
-
                 HttpSession session = request.getSession(true);
                 session.setMaxInactiveInterval(-1);
                 databaseController dbconteroller = new databaseController();
                 java.sql.Connection con = dbconteroller.openDatabaseConnection();
-                PreparedStatement stmt = con.prepareStatement("SELECT * FROM customer INNER JOIN banck_account on customer.customer_id = banck_account.customer_id WHERE customer.customer_id = ? AND customer.password = ?");
+                PreparedStatement stmt = con.prepareStatement("SELECT * FROM customer WHERE customer.customer_id = ? AND customer.password = ?");
                 stmt.setInt(1, customer_id);//1 specifies the first parameter in the query  
                 stmt.setString(2, customer_password);//1 specifies the first parameter in the query  
 
@@ -56,9 +55,7 @@ public class ValidateController extends HttpServlet {
                         session.setAttribute("wrong_logging", "true");
                         response.sendRedirect("login.jsp");
 
-                    }
-                    //response.sendRedirect("customerhome.jsp");
-                    System.out.println("i am here ^^^^^^^^^^^");
+                    }             
                     DashboardController ob = new DashboardController();
                     //ob.doPost(request, response);
                     response.sendRedirect("DashboardController");
@@ -67,7 +64,6 @@ public class ValidateController extends HttpServlet {
                 }
 
             } catch (Exception e) {
-                out.print("Heloooooo");
 
             }
 

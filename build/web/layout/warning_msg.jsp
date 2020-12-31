@@ -14,7 +14,10 @@
 
 %>
 
-<div class="alert alert-warning alert-dismissable">
+<%
+    if (request.getAttribute("has_account")=="false") {%>
+    
+              <div class="alert alert-warning alert-dismissable">
     <div class="alertwrapper clearfix">
         <div class="alertcontent">
             <h4>Warning!</h4>
@@ -24,5 +27,12 @@
         </div>
     </div>
 </div>
-<%    
+
+     
+
+
+
+
+<%
+    }
 %>

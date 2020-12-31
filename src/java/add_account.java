@@ -1,3 +1,4 @@
+
 import com.mysql.jdbc.Connection;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -32,22 +33,19 @@ public class add_account extends HttpServlet {
 
             try {
 
-                Class.forName("com.mysql.jdbc.Driver");
+                databaseController dbconteroller = new databaseController();
+                Connection con = dbconteroller.openDatabaseConnection();
+                PreparedStatement stmt = con.prepareStatement("INSERT INTO banck_account VALUES (DEFAULT,?,?,?)");
 
-                String url = "jdbc:mysql://localhost:3306/bank_management_system?zeroDateTimeBehavior=convertToNull";
-                Connection con = (Connection) DriverManager.getConnection(url, "root", "");
-                PreparedStatement stmt = con.prepareStatement("INSERT INTO banck_account VALUES (?,?,?,?)");
-                stmt.setInt(1, 5);
-                stmt.setInt(2, Integer.parseInt(request.getSession().getAttribute("customer_id").toString()));//1 specifies the first parameter in the query  
-                stmt.setInt(3, 1000);//1 specifies the first parameter in the query  
-                stmt.setTimestamp(4, Helpers.Helper.getCurrentTimeStamp());
-//1 specifies the first parameter in the query  
+                stmt.setInt(1, Integer.parseInt(request.getSession().getAttribute("customer_id").toString()));//1 specifies the first parameter in the query  
+                stmt.setInt(2, 1000);//1 specifies the first parameter in the query  
+                stmt.setTimestamp(3, Helpers.Helper.getCurrentTimeStamp());
+                //1 specifies the first parameter in the query  
                 out.print(stmt);
                 try {
                     stmt.executeUpdate();
-                    
-                    
-                    response.sendRedirect("customerhome.jsp");
+
+                    response.sendRedirect("DashboardController");
 
                 } catch (SQLException e) {
                     e.printStackTrace();
