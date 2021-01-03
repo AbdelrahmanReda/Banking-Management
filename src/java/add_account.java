@@ -44,7 +44,6 @@ public class add_account extends HttpServlet {
                 out.print(stmt);
                 try {
                     stmt.executeUpdate();
-
                     response.sendRedirect("DashboardController");
 
                 } catch (SQLException e) {

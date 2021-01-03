@@ -4,22 +4,13 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/src/java/add_account.java</file>
-            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/web/layout/navbar.jsp</file>
             <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/src/java/TransactionsController.java</file>
-            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/src/java/NewServlet.java</file>
-            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/src/java/databaseController.java</file>
-            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/src/java/log_out.java</file>
-            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/web/layout/header.jsp</file>
-            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/web/login.jsp</file>
-            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/web/WEB-INF/web.xml</file>
-            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/web/test.jsp</file>
-            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/src/java/Helpers/Helper.java</file>
-            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/src/java/ValidateController.java</file>
-            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/web/create_account.html</file>
             <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/src/java/DashboardController.java</file>
             <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/web/style2.css</file>
-            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/web/login.jsp</file>
             <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/web/Transaction.jsp</file>
+            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/src/java/ValidateController.java</file>
+            <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/web/layout/warning_msg.jsp</file>
             <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/web/customerhome.jsp</file>
             <file>file:/C:/Users/boody/Documents/NetBeansProjects/bank_management_systems/web/layout/sidebar.jsp</file>
         </group>
