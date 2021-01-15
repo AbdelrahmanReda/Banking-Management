@@ -142,6 +142,7 @@ public class TransactionsController extends HttpServlet {
     }
 
     private void cancelTransaction(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+        HttpSession session = request.getSession();
         PrintWriter out = response.getWriter();
         PreparedStatement stmt = null;
         databaseController dbconteroller = new databaseController();
@@ -162,7 +163,7 @@ public class TransactionsController extends HttpServlet {
             transaction_ammount = rs.getFloat("transaction_amount");
         }
 
-        stmt = con.prepareStatement("DELETE FROM  banck_transaction WHERE banck_transaction.transaction_id=? AND TIMESTAMPDIFF(HOUR,banck_transaction.created_at,now())>=24 ");
+        stmt = con.prepareStatement("DELETE FROM  banck_transaction WHERE banck_transaction.transaction_id=? AND TIMESTAMPDIFF(HOUR,banck_transaction.created_at,now())<=24 ");
         stmt.setInt(1, transaction_id);
         if (stmt.executeUpdate() > 0) {
             System.out.println("updating with source :" + source_account_id + "  and dist " + destination_account_id);
@@ -176,6 +177,11 @@ public class TransactionsController extends HttpServlet {
             stmt.setInt(2, destination_account_id);
             stmt.executeUpdate();
 
+        }
+        else
+        {
+            session.setAttribute("cancelation_error", "true");
+            
         }
 
         getTransactions(request, response);

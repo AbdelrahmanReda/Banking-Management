@@ -32,7 +32,7 @@
 <%}
     if (session.getAttribute("successfull_transaction") != null) {
         session.removeAttribute("successfull_transaction");
-    
+
     
 
 %>
@@ -40,4 +40,11 @@
     Transaction accomplished successfully 
 </div>
 <%}
+    if (session.getAttribute("cancelation_error") != null) {
+        session.removeAttribute("cancelation_error");
 %>
+<div class="alert alert-danger" role="alert">
+   You are too late, unfortunately you can't cancel the transaction right now
+</div>
+
+<%}%>
