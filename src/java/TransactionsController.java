@@ -32,16 +32,30 @@ import javax.servlet.http.HttpSession;
 @WebServlet(urlPatterns = {"/TransactionsController"})
 public class TransactionsController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    public int getPersonalBankId(HttpServletRequest request) throws SQLException {
+
+        HttpSession session = request.getSession();
+        System.out.println("here 1");
+        int id = Integer.parseInt(session.getAttribute("customer_id").toString());
+        System.out.println("here 2");
+        databaseController dbconteroller = new databaseController();
+        Connection con = dbconteroller.openDatabaseConnection();
+        PreparedStatement statement = con.prepareStatement("SELECT bank_account_id from banck_account\n"
+                + "    inner JOIN customer on banck_account.customer_id = customer.customer_id\n"
+                + "    where customer.customer_id=?;");
+
+        statement.setInt(1, id);
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+
+            return rs.getInt("bank_account_id");
+        }
+
+        return -1;
+    }
+
     private void makeTransaction(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+        HttpSession session = request.getSession();
         PrintWriter out = null;
         PreparedStatement stmt = null;
         databaseController dbconteroller = new databaseController();
@@ -49,30 +63,51 @@ public class TransactionsController extends HttpServlet {
         try {
             out = response.getWriter();
             float transaction_ammount = Integer.parseInt(request.getParameter("transaction_ammount"));;
-            int from_Account = Integer.parseInt(request.getParameter("source_account_id"));
+            int from_Account = getPersonalBankId(request);
             int to_account = Integer.parseInt(request.getParameter("destination_account_id"));
-
+            stmt = con.prepareStatement("SELECT * FROM banck_account where bank_account_id = ?;");
+            stmt.setFloat(1, to_account);
+            ResultSet rs = stmt.executeQuery();
+            boolean exist = false;
+            while (rs.next()) {
+                exist = true;
+            }
+            if (!exist) {
+                session.setAttribute("no_existing_destination", "true");
+                response.sendRedirect("Transaction.jsp");
+                return;
+            }
             stmt = con.prepareStatement("UPDATE  banck_account  SET banck_account.balance = banck_account.balance-? WHERE bank_account_id = ? AND (banck_account.balance-?)>=0;");
             stmt.setFloat(1, transaction_ammount);
             stmt.setInt(2, from_Account);
+            if (from_Account == to_account) {
+                session.setAttribute("same_id_error", "true");
+                response.sendRedirect("Transaction.jsp");
+                return;
+
+            }
             stmt.setFloat(3, transaction_ammount);
-
+            System.out.println("hello here");
             if (stmt.executeUpdate() > 0) {
-
                 stmt = con.prepareStatement("UPDATE  banck_account  SET banck_account.balance = banck_account.balance+? WHERE bank_account_id = ?");
                 stmt.setFloat(1, transaction_ammount);
                 stmt.setInt(2, to_account);
                 stmt.execute();
-
                 stmt = con.prepareStatement("INSERT INTO banck_transaction VALUES (DEFAULT,?,?,?,DEFAULT)");
                 stmt.setFloat(1, transaction_ammount);
                 stmt.setInt(2, from_Account);
                 stmt.setInt(3, to_account);
                 stmt.executeUpdate();
-
+                session.setAttribute("successfull_transaction", "true");
                 getTransactions(request, response);
+                
+            } else {
+                session.setAttribute("not_sufficent_ammount", "true");
+                response.sendRedirect("Transaction.jsp");
+                return;
             }
         } catch (IOException ex) {
+            ex.printStackTrace();
             Logger.getLogger(TransactionsController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -85,7 +120,7 @@ public class TransactionsController extends HttpServlet {
         //stmt = con.prepareStatement("SELECT * FROM banck_transaction");
         stmt = con.prepareStatement("SELECT * FROM banck_transaction WHERE banck_transaction.from_account = ? OR banck_transaction.to_account = ? ");
         HttpSession session = request.getSession();
-        int customer_id= Integer.parseInt(session.getAttribute("customer_id").toString());
+        int customer_id = Integer.parseInt(session.getAttribute("customer_id").toString());
         stmt.setInt(1, customer_id);
         stmt.setInt(2, customer_id);
         ResultSet rs = stmt.executeQuery();
@@ -99,7 +134,7 @@ public class TransactionsController extends HttpServlet {
             Transaction transaction = new Transaction(transactions_id, transaction_ammount, from_Account, to_account, created_at);
             transactions.add(transaction);
         }
-        
+
         session.setAttribute("transactionList", transactions);
         response.sendRedirect("Transaction.jsp");
         // request.getRequestDispatcher("Transaction.jsp").forward(request, response);
@@ -158,7 +193,7 @@ public class TransactionsController extends HttpServlet {
                 response.sendRedirect("login.jsp");
                 return;
             }
-            if (request.getParameter("source_account_id") != null) {
+            if (request.getParameter("destination_account_id") != null) {
                 makeTransaction(request, response);
 
             } else if (request.getParameter("cancelled_transaction_id") != null) {

@@ -26,6 +26,7 @@
             <!-- Page Content  -->
             <div id="content">
                 <%@ include file = "layout\navbar.jsp" %>
+                 <%@include file="layout/alerts.jsp" %> 
                 <div class="card">
                     <div class="card-header">
                         <div class="container-fluid">
@@ -34,6 +35,8 @@
                                     <span data-balloon="Copy Unicode Glyph" data-balloon-pos="down" class="dib hover-orange4"><svg style="width: 45px; height: auto" aria-hidden="true" focusable="false" data-prefix="far" data-icon="barcode-alt" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="svg-inline--fa fa-barcode-alt fa-w-20" style=""><path fill="currentColor" d="M360 384h48c4.4 0 8-3.6 8-8V136c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v240c0 4.4 3.6 8 8 8zm96 0h48c4.4 0 8-3.6 8-8V136c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v240c0 4.4 3.6 8 8 8zm-160 0h16c4.4 0 8-3.6 8-8V136c0-4.4-3.6-8-8-8h-16c-4.4 0-8 3.6-8 8v240c0 4.4 3.6 8 8 8zM592 0H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h544c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm0 464H48V48h544v416zm-456-80h48c4.4 0 8-3.6 8-8V136c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v240c0 4.4 3.6 8 8 8zm96 0h16c4.4 0 8-3.6 8-8V136c0-4.4-3.6-8-8-8h-16c-4.4 0-8 3.6-8 8v240c0 4.4 3.6 8 8 8z" class=""></path></svg></span>
                                 </div>
                                 <div class="col" >
+                                       
+
                                     <h1>Money Transfer </h1>
                                 </div>
                             </div>
@@ -45,15 +48,12 @@
                     <div class="card-body">
                         <form class="needs-validation" method="POST" action="TransactionsController" >
                             <div class="form-row">
-                                <div class="col-md-4 mb-3">
-                                    <label for="source_account_id">Source Account ID</label>
-                                    <input type="number" min="1" class="form-control" id="source_account_id" name="source_account_id" placeholder="ex:98448188" value="Mark" required>
-                                </div>
-                                <div class="col-md-4 mb-3">
+                                
+                                <div class="col-md-6 mb-3">
                                     <label  for="destination_account_id">Destination Account ID</label>
                                     <input type="number" min="1"  class="form-control" id="destination_account_id" name="destination_account_id" placeholder="ex: 1658484"  required>
                                 </div>
-                                <div class="col-md-4 mb-3">
+                                <div class="col-md-6 mb-3">
                                     <label for="transaction_ammount">Transaction Ammount</label>
                                     <input type="number" min="50" class="form-control" id="transaction_ammount" name="transaction_ammount"  placeholder="ex:200" value="Otto" required>
                                 </div>

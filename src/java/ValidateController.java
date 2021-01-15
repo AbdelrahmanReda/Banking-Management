@@ -48,6 +48,7 @@ public class ValidateController extends HttpServlet {
                         rowsCounter = rowsCounter + 1;
                         session.setAttribute("customer_id", rs.getInt("customer_id"));
                         session.setAttribute("customer_name", rs.getString("customer_name"));
+                        
                        
                     }
                     if (rowsCounter == 0) {
